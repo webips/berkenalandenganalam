@@ -3,15 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panjat Pinang IPS Kelas VII - Berkenalan Dengan Alam</title>
+    <title>Panjat Pinang IPS Kelas VII - Berkenalan dengan Alam</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Fredoka & Nunito -->
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&
-    family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.
-    css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         * {
@@ -19,22 +17,1546 @@
             user-select: none;
             -webkit-user-select: none;
         }
-        /* Gradient Background Biru-Hijau Lembut */
+
+        /* Nuansa Alami Earthy Forest Gradient Background */
         body {
-            background: linear-gradient(135deg, #0ea5e9 0%, #14b8a6 40%, #10b981 100%);
+            background: linear-gradient(135deg, #14532d 0%, #166534 30%, #0f766e 70%, #15803d 100%);
             min-height: 100vh;
             overflow-x: hidden;
         }
-        /* Glassmorphism Card Style */
+
+        /* Glassmorphism Card Style with Eco-Border */
         .glass-card {
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 3px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 20px 40px rgba(0, 90, 110, 0.18);
+            border: 3px solid rgba(220, 252, 231, 0.9);
+            box-shadow: 0 20px 40px rgba(5, 46, 22, 0.3);
         }
+
         /* Button Press Animation */
         .btn-bounce {
             transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 8px 0px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 0px rgba(0, 0, 0, 0.2);
         }
+        .btn-bounce:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 11px 0px rgba(0, 0, 0, 0.2);
+        }
+        .btn-bounce:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Earthy Green Button */
+        .btn-nature {
+            background: linear-gradient(135deg, #15803d, #16a34a, #22c55e);
+            color: white;
+            box-shadow: 0 8px 0px #14532d;
+        }
+        .btn-nature:hover {
+            box-shadow: 0 11px 0px #14532d;
+        }
+        .btn-nature:active {
+            box-shadow: 0 2px 0px #14532d;
+        }
+
+        /* Earthy Wood / Warm Amber Button */
+        .btn-earth {
+            background: linear-gradient(135deg, #b45309, #d97706, #f59e0b);
+            color: white;
+            box-shadow: 0 8px 0px #78350f;
+        }
+        .btn-earth:hover {
+            box-shadow: 0 11px 0px #78350f;
+        }
+        .btn-earth:active {
+            box-shadow: 0 2px 0px #78350f;
+        }
+
+        /* Multiple Choice Option Buttons */
+        .option-btn {
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            box-shadow: 0 5px 0px #94a3b8;
+            color: #1e293b;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 1.25rem;
+            transition: all 0.15s ease;
+        }
+        .option-btn:hover {
+            background: #f0fdf4;
+            border-color: #16a34a;
+            color: #14532d;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 0px #16a34a;
+        }
+        .option-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0px #94a3b8;
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-float {
+            animation: float 2.5s ease-in-out infinite;
+        }
+
+        /* Confetti Overlay Canvas */
+        #confettiCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen justify-between items-center p-3 md:p-6 text-slate-800">
+
+    <canvas id="confettiCanvas"></canvas>
+
+    <!-- Header Navigation / Audio Controls -->
+    <header class="w-full max-w-5xl flex justify-between items-center mb-2 z-10">
+        <div class="flex items-center gap-3">
+            <span class="text-3xl md:text-4xl animate-bounce">🌿</span>
+            <div>
+                <h1 class="text-xl md:text-2xl font-black tracking-wide text-white drop-shadow-md">Panjat Pinang IPS</h1>
+                <p class="text-xs text-emerald-100 font-bold hidden sm:block">Kelas VII SMP - Tema II: Berkenalan dengan Alam</p>
+            </div>
+        </div>
+        <button id="soundToggleBtn" onclick="toggleSound()" class="bg-white/90 hover:bg-white text-emerald-950 p-3 rounded-2xl shadow-md border-2 border-emerald-200 transition-all font-bold flex items-center gap-2 text-sm md:text-base">
+            <i id="soundIcon" class="fas fa-volume-up text-lg text-emerald-700"></i>
+            <span id="soundText" class="hidden sm:inline">Suara: ON</span>
+        </button>
+    </header>
+
+    <!-- 1️⃣ HALAMAN PEMILIHAN TOPIK MATERI IPS (4 MENU UTAMA) -->
+    <main id="screenTopic" class="w-full max-w-3xl my-auto flex flex-col items-center z-10 transition-all duration-300">
+        <div class="glass-card w-full rounded-[2.5rem] p-6 md:p-8 text-center flex flex-col items-center">
+            
+            <!-- Banner Graphic -->
+            <div class="relative mb-3 animate-float">
+                <div class="w-24 h-24 md:w-28 md:h-28 bg-gradient-to-tr from-emerald-500 via-teal-500 to-amber-500 rounded-full flex items-center justify-center border-4 border-white shadow-lg mx-auto">
+                    <span class="text-5xl md:text-6xl">🌏</span>
+                </div>
+                <div class="absolute -bottom-2 -right-2 bg-emerald-700 text-white text-xs font-black px-3 py-1 rounded-full shadow border-2 border-white">
+                    IPS KELAS 7
+                </div>
+            </div>
+
+            <h2 class="text-3xl md:text-4xl font-black text-slate-800 mb-1 tracking-tight">
+                Berkenalan dengan Alam
+            </h2>
+            <p class="text-sm md:text-base font-bold text-emerald-800 mb-5">
+                Pilih topik materi IPS untuk memulai kompetisi Panjat Pinang!
+            </p>
+
+            <!-- Mode Selector (1 Player vs CPU OR 2 Player Local) -->
+            <div class="w-full bg-emerald-100/80 p-1.5 rounded-2xl mb-5 flex gap-2 border border-emerald-300">
+                <button id="mode1PBtn" onclick="setPlayerMode('1P')" class="flex-1 py-2.5 px-4 rounded-xl font-extrabold text-xs md:text-sm transition-all bg-white text-emerald-900 shadow-sm border border-emerald-300">
+                    <i class="fas fa-robot mr-1 text-emerald-700"></i> 1 Pemain vs Bot
+                </button>
+                <button id="mode2PBtn" onclick="setPlayerMode('2P')" class="flex-1 py-2.5 px-4 rounded-xl font-extrabold text-xs md:text-sm transition-all text-emerald-800 hover:text-emerald-950">
+                    <i class="fas fa-user-friends mr-1 text-emerald-700"></i> 2 Pemain (Tanding)
+                </button>
+            </div>
+
+            <!-- 4 Main Topics Required: Geologi, Pencemaran Air, Udara, Tanah -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full mb-4">
+                
+                <!-- Menu 1: Bumi Secara Geologi -->
+                <button onclick="selectTopic('geologi')" class="btn-bounce btn-nature p-4 rounded-[2rem] flex items-center justify-start gap-3 cursor-pointer text-left">
+                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-3xl shrink-0">
+                        🌋
+                    </div>
+                    <div>
+                        <div class="text-base md:text-lg font-black leading-tight">Bumi Secara Geologi</div>
+                        <div class="text-xs text-emerald-100 font-semibold">Arkaekum, Paleo, Meso & Neozoikum</div>
+                    </div>
+                </button>
+
+                <!-- Menu 2: Pencemaran Udara -->
+                <button onclick="selectTopic('udara')" class="btn-bounce btn-nature p-4 rounded-[2rem] flex items-center justify-start gap-3 cursor-pointer text-left">
+                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-3xl shrink-0">
+                        💨
+                    </div>
+                    <div>
+                        <div class="text-base md:text-lg font-black leading-tight">Pencemaran Udara</div>
+                        <div class="text-xs text-emerald-100 font-semibold">Efek Rumah Kaca & Emisi CO₂</div>
+                    </div>
+                </button>
+
+                <!-- Menu 3: Pencemaran Air -->
+                <button onclick="selectTopic('air')" class="btn-bounce btn-earth p-4 rounded-[2rem] flex items-center justify-start gap-3 cursor-pointer text-left">
+                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-3xl shrink-0">
+                        💧
+                    </div>
+                    <div>
+                        <div class="text-base md:text-lg font-black leading-tight">Pencemaran Air</div>
+                        <div class="text-xs text-amber-100 font-semibold">Limbah, Eutrofikasi & Air Sumur</div>
+                    </div>
+                </button>
+
+                <!-- Menu 4: Pencemaran Tanah -->
+                <button onclick="selectTopic('tanah')" class="btn-bounce btn-earth p-4 rounded-[2rem] flex items-center justify-start gap-3 cursor-pointer text-left">
+                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-3xl shrink-0">
+                        🌱
+                    </div>
+                    <div>
+                        <div class="text-base md:text-lg font-black leading-tight">Pencemaran Tanah</div>
+                        <div class="text-xs text-amber-100 font-semibold">Sampah, Pestisida & Karsinogen</div>
+                    </div>
+                </button>
+            </div>
+
+            <!-- All Topics Mix Button -->
+            <button onclick="selectTopic('mix')" class="w-full bg-white hover:bg-emerald-50 text-emerald-900 py-3 rounded-2xl border-2 border-emerald-300 font-extrabold text-xs md:text-sm flex items-center justify-center gap-2 shadow-sm transition-all">
+                <span class="text-lg">🔀</span> Mode Campuran Semua Topik Alam
+            </button>
+        </div>
+    </main>
+
+    <!-- 2️⃣ HALAMAN PILIH LEVEL (BEGINNER, SEDANG, MAHIR) -->
+    <main id="screenLevel" class="w-full max-w-2xl my-auto flex flex-col items-center z-10 hidden transition-all duration-300">
+        <div class="glass-card w-full rounded-[2.5rem] p-6 md:p-8 text-center flex flex-col items-center">
+            <h2 class="text-3xl md:text-4xl font-black text-slate-800 mb-1">
+                Pilih Level Kesulitan
+            </h2>
+            <div class="bg-emerald-100 text-emerald-950 font-extrabold px-4 py-1.5 rounded-full text-xs md:text-sm mb-6 shadow-inner border border-emerald-300">
+                Topik: <span id="selectedTopicLabel" class="underline">Bumi Secara Geologi</span>
+            </div>
+
+            <!-- 3 Level Difficulty Buttons -->
+            <div class="flex flex-col gap-4 w-full mb-6">
+                
+                <!-- Beginner (Hijau Alami) -->
+                <button onclick="selectLevel('beginner')" class="btn-bounce bg-gradient-to-r from-emerald-600 to-green-700 text-white p-4 md:p-5 rounded-[2rem] flex items-center justify-between shadow-lg cursor-pointer border-2 border-emerald-300">
+                    <div class="flex items-center gap-4 text-left">
+                        <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-3xl font-black">
+                            🌱
+                        </div>
+                        <div>
+                            <div class="text-xl md:text-2xl font-black">Beginner</div>
+                            <div class="text-xs md:text-sm text-emerald-100 font-semibold">Soal Pemahaman Konsep Dasar</div>
+                        </div>
+                    </div>
+                    <div class="text-xl md:text-2xl tracking-widest bg-emerald-900/40 px-3 py-1 rounded-xl">
+                        ⭐
+                    </div>
+                </button>
+
+                <!-- Sedang (Oranye / Earthy Amber) -->
+                <button onclick="selectLevel('sedang')" class="btn-bounce bg-gradient-to-r from-amber-600 to-orange-700 text-white p-4 md:p-5 rounded-[2rem] flex items-center justify-between shadow-lg cursor-pointer border-2 border-amber-300">
+                    <div class="flex items-center gap-4 text-left">
+                        <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-3xl font-black">
+                            ⚡
+                        </div>
+                        <div>
+                            <div class="text-xl md:text-2xl font-black">Sedang</div>
+                            <div class="text-xs md:text-sm text-amber-100 font-semibold">Soal Kasus & Dampak Lingkungan</div>
+                        </div>
+                    </div>
+                    <div class="text-xl md:text-2xl tracking-widest bg-amber-950/40 px-3 py-1 rounded-xl">
+                        ⭐⭐
+                    </div>
+                </button>
+
+                <!-- Mahir (Deep Red / Earth Fire) -->
+                <button onclick="selectLevel('mahir')" class="btn-bounce bg-gradient-to-r from-rose-700 to-red-800 text-white p-4 md:p-5 rounded-[2rem] flex items-center justify-between shadow-lg cursor-pointer border-2 border-rose-300">
+                    <div class="flex items-center gap-4 text-left">
+                        <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-3xl font-black">
+                            🔥
+                        </div>
+                        <div>
+                            <div class="text-xl md:text-2xl font-black">Mahir</div>
+                            <div class="text-xs md:text-sm text-rose-100 font-semibold">Soal Analisis Mendalam & Ekosistem</div>
+                        </div>
+                    </div>
+                    <div class="text-xl md:text-2xl tracking-widest bg-rose-950/40 px-3 py-1 rounded-xl">
+                        ⭐⭐⭐
+                    </div>
+                </button>
+
+            </div>
+
+            <!-- Back Button -->
+            <button onclick="showScreen('screenTopic')" class="bg-white hover:bg-slate-100 text-slate-700 px-6 py-2.5 rounded-2xl font-extrabold shadow border-2 border-slate-200 transition-all flex items-center gap-2 text-sm">
+                <i class="fas fa-arrow-left"></i> Kembali ke Menu Topik
+            </button>
+        </div>
+    </main>
+
+    <!-- 3️⃣ HALAMAN GAMEPLAY PANJAT PINANG IPS -->
+    <main id="screenGameplay" class="w-full max-w-6xl my-auto z-10 hidden transition-all duration-300">
+        
+        <!-- Top Status Bar -->
+        <div class="flex justify-between items-center bg-white/95 backdrop-blur-md px-4 py-2 rounded-2xl mb-3 shadow border border-emerald-200">
+            <button onclick="confirmExitGame()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-extrabold px-3 py-1.5 rounded-xl text-xs md:text-sm transition-all flex items-center gap-1">
+                <i class="fas fa-arrow-left"></i> Menu
+            </button>
+            <div class="text-xs md:text-sm font-black text-emerald-950 flex items-center gap-2">
+                <span id="gameplayTopicTag" class="bg-emerald-700 text-white px-2.5 py-0.5 rounded-lg">Geologi</span>
+                <span id="gameplayLevelTag" class="bg-amber-600 text-white px-2.5 py-0.5 rounded-lg">Beginner</span>
+            </div>
+            <button onclick="resetCurrentGame()" class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-extrabold px-3 py-1.5 rounded-xl text-xs md:text-sm transition-all flex items-center gap-1">
+                <i class="fas fa-redo"></i> Ulang
+            </button>
+        </div>
+
+        <!-- Main Gameplay Layout: Left Player - Center Canvas - Right Player -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-stretch">
+            
+            <!-- LEFT PLAYER PANEL (PEMAIN MERAH) -->
+            <div class="lg:col-span-4 glass-card rounded-[2rem] p-4 flex flex-col justify-between border-4 border-rose-300">
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-full bg-rose-600 text-white flex items-center justify-center font-black text-sm shadow">P1</div>
+                            <span class="font-extrabold text-slate-800 text-base">Pemain Merah</span>
+                        </div>
+                        <div class="bg-rose-100 text-rose-900 px-3 py-1 rounded-full text-xs font-black border border-rose-200">
+                            Benar: <span id="p1Score" class="text-rose-700 text-sm md:text-base">0</span>/7
+                        </div>
+                    </div>
+                    
+                    <!-- Question Card -->
+                    <div class="bg-gradient-to-br from-rose-600 to-pink-700 rounded-2xl p-3.5 text-center text-white shadow-md my-2">
+                        <div class="text-[10px] font-bold text-rose-100 uppercase tracking-wider mb-1">Pertanyaan IPS:</div>
+                        <div id="p1Question" class="text-xs md:text-sm font-extrabold min-h-[60px] flex items-center justify-center leading-snug">
+                            Loading pertanyaan...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4 Answer Options for P1 -->
+                <div id="p1OptionsContainer" class="grid grid-cols-1 gap-2 mt-2">
+                    <!-- Dynamic option buttons -->
+                </div>
+            </div>
+
+            <!-- CENTER AREA: CANVAS TIANG PANJAT PINANG ALAMI -->
+            <div class="lg:col-span-4 glass-card rounded-[2rem] p-3 flex flex-col items-center justify-between min-h-[380px] lg:min-h-[460px] relative overflow-hidden border-4 border-emerald-400">
+                
+                <!-- Pole Canvas Visual -->
+                <div class="w-full h-full relative flex justify-center items-end pb-2">
+                    <canvas id="pinangCanvas" class="w-full h-full max-h-[400px]"></canvas>
+                </div>
+
+                <!-- Bottom Banner -->
+                <div class="bg-white/95 px-3 py-1.5 rounded-full text-center text-xs font-extrabold text-emerald-950 border border-emerald-200 shadow-sm w-full">
+                    Jawab soal IPS untuk memanjat! (7 jawaban benar untuk menang)
+                </div>
+            </div>
+
+            <!-- RIGHT PLAYER PANEL (PEMAIN BIRU / BOT) -->
+            <div id="p2Panel" class="lg:col-span-4 glass-card rounded-[2rem] p-4 flex flex-col justify-between border-4 border-sky-300">
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 rounded-full bg-sky-600 text-white flex items-center justify-center font-black text-sm shadow">P2</div>
+                            <span id="p2NameLabel" class="font-extrabold text-slate-800 text-base">Pemain Biru</span>
+                        </div>
+                        <div class="bg-sky-100 text-sky-900 px-3 py-1 rounded-full text-xs font-black border border-sky-200">
+                            Benar: <span id="p2Score" class="text-sky-700 text-sm md:text-base">0</span>/7
+                        </div>
+                    </div>
+                    
+                    <!-- Question Card -->
+                    <div class="bg-gradient-to-br from-sky-600 to-blue-700 rounded-2xl p-3.5 text-center text-white shadow-md my-2">
+                        <div class="text-[10px] font-bold text-sky-100 uppercase tracking-wider mb-1">Pertanyaan IPS:</div>
+                        <div id="p2Question" class="text-xs md:text-sm font-extrabold min-h-[60px] flex items-center justify-center leading-snug">
+                            Loading pertanyaan...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4 Answer Options for P2 -->
+                <div id="p2OptionsContainer" class="grid grid-cols-1 gap-2 mt-2">
+                    <!-- Dynamic option buttons -->
+                </div>
+
+                <!-- CPU Thinking Indicator -->
+                <div id="cpuThinkingBox" class="hidden flex-1 flex flex-col items-center justify-center p-6 bg-sky-50/90 rounded-2xl border-2 border-dashed border-sky-300 text-center my-auto">
+                    <div class="animate-bounce text-4xl mb-2">🤖</div>
+                    <div class="font-extrabold text-sky-900 text-sm">Bot Komputer Sedang Berpikir...</div>
+                    <div class="text-xs text-sky-600 mt-1">Jawab pertanyaanmu lebih cepat dari Bot!</div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- 4️⃣ HALAMAN KEMENANGAN (VICTORY MODAL) -->
+    <div id="screenVictory" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-card max-w-lg w-full rounded-[2.5rem] p-6 md:p-8 text-center relative overflow-hidden border-4 border-amber-400">
+            
+            <!-- Trophy Icon -->
+            <div class="w-24 h-24 bg-amber-400 rounded-full flex items-center justify-center text-5xl mx-auto shadow-lg border-4 border-white animate-float mb-4">
+                🏆
+            </div>
+
+            <h3 class="text-xl font-black text-amber-700 tracking-wider uppercase mb-1">PemenangIPS Sekitar Alam!</h3>
+            <h2 id="winnerTitle" class="text-2xl md:text-3xl font-black text-slate-800 mb-2">
+                Pemain Merah Menang!
+            </h2>
+            <p id="winnerSubtitle" class="text-slate-600 text-xs md:text-sm font-bold mb-6">
+                Selamat! Kamu berhasil menjawab soal-soal IPS dan mengambil hadiah di puncak tiang pinang!
+            </p>
+
+            <!-- Prize Collection Box -->
+            <div class="bg-amber-50 p-4 rounded-2xl border-2 border-amber-200 mb-6 flex justify-around items-center text-3xl">
+                <span title="Kaos">👕</span>
+                <span title="Gitar">🎸</span>
+                <span title="Kado">🎁</span>
+                <span title="Sepeda">🚲</span>
+                <span title="Bendera Merah Putih">🇮🇩</span>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button onclick="resetCurrentGame()" class="btn-bounce flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3.5 px-4 rounded-2xl shadow-md border-2 border-emerald-300 flex items-center justify-center gap-2">
+                    <i class="fas fa-redo"></i> Main Lagi
+                </button>
+                <button onclick="showScreen('screenTopic')" class="btn-bounce flex-1 bg-white hover:bg-slate-100 text-slate-800 font-extrabold py-3.5 px-4 rounded-2xl shadow-md border-2 border-slate-200 flex items-center justify-center gap-2">
+                    <i class="fas fa-home"></i> Pilih Topik
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Modal Replacement for Alert / Confirm -->
+    <div id="customModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-card max-w-sm w-full rounded-[2rem] p-6 text-center border-4 border-emerald-300">
+            <div class="text-4xl mb-3" id="modalIcon">❓</div>
+            <h3 class="text-xl font-black text-slate-800 mb-2" id="modalTitle">Konfirmasi</h3>
+            <p class="text-slate-600 text-sm font-bold mb-6" id="modalText">Apakah Anda yakin?</p>
+            <div class="flex gap-3 justify-center">
+                <button id="modalCancelBtn" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-extrabold py-2.5 px-5 rounded-xl text-sm">Batal</button>
+                <button id="modalConfirmBtn" class="bg-rose-600 hover:bg-rose-700 text-white font-extrabold py-2.5 px-5 rounded-xl text-sm shadow">Ya, Keluar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-full text-white font-black text-sm md:text-base shadow-xl transition-all duration-300 opacity-0 pointer-events-none scale-90">
+        Jawaban Benar! 🎉
+    </div>
+
+    <script>
+        /* ==========================================
+           IPS BANK SOAL MATERI KELAS VII SEMESTER 1
+           (Tema II: Keberagaman Lingkungan Sekitar - Berkenalan dengan Alam)
+           3 Level (Beginner, Sedang, Mahir) per 4 Menu Utama
+           Soal Bervariasi & Tanpa Pengulangan
+           ========================================== */
+        const questionBank = {
+            // MENU 1: BUMI SECARA GEOLOGI
+            'geologi': {
+                'beginner': [
+                    {
+                        q: "Berapakah estimasi umur bumi saat ini berdasarkan identifikasi geologis para ilmuwan?",
+                        options: ["Kurang lebih 2,5 miliar tahun", "Kurang lebih 100 juta tahun", "Kurang lebih 10 miliar tahun", "Kurang lebih 500 ribu tahun"],
+                        answer: 0
+                    },
+                    {
+                        q: "Zaman geologi paling tua saat bumi belum stabil dan bersuhu sangat panas adalah...",
+                        options: ["Zaman Paleozoikum", "Zaman Arkaekum", "Zaman Mesozoikum", "Zaman Kuarter"],
+                        answer: 1
+                    },
+                    {
+                        q: "Makhluk hidup pertama berupa prokariota dan sianobakteri muncul pada era...",
+                        options: ["Tersier", "Kuarter", "Arkhean (Arkaekum)", "Mesozoikum"],
+                        answer: 2
+                    },
+                    {
+                        q: "Zaman geologi yang berlangsung sekitar 340 juta tahun dan ditandai munculnya tanda-tanda kehidupan awal adalah...",
+                        options: ["Zaman Arkaekum", "Zaman Mesozoikum", "Zaman Neozoikum", "Zaman Paleozoikum"],
+                        answer: 3
+                    },
+                    {
+                        q: "Dinosaurus dan reptil raksasa hidup serta mendominasi bumi pada zaman...",
+                        options: ["Zaman Mesozoikum", "Zaman Arkaekum", "Zaman Neozoikum", "Zaman Paleozoikum"],
+                        answer: 0
+                    },
+                    {
+                        q: "Kemunculan jenis burung dan mamalia pertama kali mulai terjadi pada zaman...",
+                        options: ["Zaman Arkaekum", "Zaman Mesozoikum", "Zaman Tersier", "Zaman Paleozoikum"],
+                        answer: 1
+                    },
+                    {
+                        q: "Dinosaurus dan reptil besar mengalami kepunahan secara massal akibat...",
+                        options: ["Aktivitas perburuan", "Letusan gunung serentak", "Proses seleksi alam", "Gempa bumi lokal"],
+                        answer: 2
+                    },
+                    {
+                        q: "Zaman Neozoikum terbagi menjadi dua tahapan zaman geologi utama, yaitu...",
+                        options: ["Zaman Batu dan Logam", "Zaman Es dan Panas", "Zaman Arkaekum dan Paleozoikum", "Zaman Tersier dan Kuarter"],
+                        answer: 3
+                    }
+                ],
+                'sedang': [
+                    {
+                        q: "Mengapa pada awal zaman Arkaekum belum ditemukan tanda-tanda kehidupan di bumi?",
+                        options: ["Bumi belum stabil dan suhunya masih sangat panas", "Bumi tertutup es tebal membeku", "Belum ada air sama sekali di bumi", "Bumi mengalami kegelapan total"],
+                        answer: 0
+                    },
+                    {
+                        q: "Perkembangan pesat jenis hewan menyusui (mamalia) terjadi sekitar 60 juta tahun lalu pada...",
+                        options: ["Zaman Arkaekum", "Zaman Tersier", "Zaman Paleozoikum", "Zaman Kuarter"],
+                        answer: 1
+                    },
+                    {
+                        q: "Tanda-tanda awal kemunculan kehidupan dan aktivitas manusia pertama kali dimulai pada...",
+                        options: ["Zaman Tersier", "Zaman Mesozoikum", "Zaman Kuarter", "Zaman Arkaekum"],
+                        answer: 2
+                    },
+                    {
+                        q: "Urutan pembagian zaman geologi bumi yang paling tepat dari yang paling tua adalah...",
+                        options: ["Neozoikum - Mesozoikum - Paleozoikum - Arkaekum", "Paleozoikum - Arkaekum - Neozoikum - Mesozoikum", "Mesozoikum - Arkaekum - Kuarter - Tersier", "Arkaekum - Paleozoikum - Mesozoikum - Neozoikum"],
+                        answer: 3
+                    },
+                    {
+                        q: "Zaman geologi yang dianggap paling penting bagi sejarah perkembangan aktivitas manusia adalah...",
+                        options: ["Zaman Kuarter", "Zaman Tersier", "Zaman Mesozoikum", "Zaman Arkaekum"],
+                        answer: 0
+                    },
+                    {
+                        q: "Era geologi yang berlangsung kira-kira 140 juta tahun lalu dan didominasi oleh reptil raksasa adalah...",
+                        options: ["Zaman Paleozoikum", "Zaman Mesozoikum", "Zaman Neozoikum", "Zaman Arkaekum"],
+                        answer: 1
+                    },
+                    {
+                        q: "Bukti utama para ilmuwan dalam mengidentifikasi estimasi umur dan sejarah pembentukan bumi adalah...",
+                        options: ["Fosil hewan ternak", "Catatan sejarah kuno", "Temuan-temuan geologis", "Pengukuran suhu air laut"],
+                        answer: 2
+                    },
+                    {
+                        q: "Setelah bumi terbentuk dan dapat dihuni manusia, ancaman iklim yang sedang dialami bumi saat ini adalah...",
+                        options: ["Zaman es baru", "Letusan vulkanik global", "Penurunan suhu drastis", "Pemanasan global (global warming)"],
+                        answer: 3
+                    }
+                ],
+                'mahir': [
+                    {
+                        q: "Mengapa zaman Kuarter pada era Neozoikum merupakan zaman paling penting dalam sejarah geologi?",
+                        options: ["Mulai terdapat tanda-tanda kehidupan dan aktivitas manusia", "Dinosaurus baru pertama kali berkembang pesat", "Suhu bumi berada pada tingkat terpanas dalam sejarah", "Seluruh permukaan daratan bumi tenggelam"],
+                        answer: 0
+                    },
+                    {
+                        q: "Penyebab utama kepunahan reptil raksasa (dinosaurus) yang memberi ruang bagi perkembangan burung & mamalia adalah...",
+                        options: ["Aktivitas manusia purba", "Proses seleksi alam", "Bencana gempa bumi lokal", "Tenggelamnya benua"],
+                        answer: 1
+                    },
+                    {
+                        q: "Bentuk kehidupan paling awal yang teridentifikasi di bumi pada era Arkhean (Arkaekum) berupa...",
+                        options: ["Tumbuhan paku", "Hewan mamalia", "Prokariota dan sianobakteri", "Amfibi raksasa"],
+                        answer: 2
+                    },
+                    {
+                        q: "Pembagian zaman Neozoikum menjadi dua periode (Tersier & Kuarter) didasarkan pada indikator...",
+                        options: ["Perubahan warna batuan bumi", "Ketebalan lapisan es kutub", "Pergerakan benua utama", "Perkembangan mamalia dan kemunculan manusia"],
+                        answer: 3
+                    },
+                    {
+                        q: "Interaksi antara manusia dan alam dalam pengambilan barang tambang (logam) memberikan dampak positif berupa...",
+                        options: ["Bahan dasar pembuatan benda pendukung seperti kendaraan", "Penghentian pemanasan global secara alami", "Peningkatan jumlah kawasan hutan lindung", "Pembersihan emisi gas industri"],
+                        answer: 0
+                    },
+                    {
+                        q: "Meskipun alam menyediakan kebutuhan hidup, interaksi manusia yang tidak arif dapat memicu...",
+                        options: ["Peningkatan daya dukung alam", "Pencemaran dan kerusakan lingkungan", "Percepatan pembentukan fosil baru", "Penurunan suhu bumi secara konstan"],
+                        answer: 1
+                    },
+                    {
+                        q: "Rentang waktu berlangsungnya era Paleozoikum menurut catatan geologi bumi adalah sekitar...",
+                        options: ["140 juta tahun", "60 juta tahun", "340 juta tahun", "2,5 miliar tahun"],
+                        answer: 2
+                    },
+                    {
+                        q: "Kurun waktu berlangsungnya era Mesozoikum dalam sejarah perkembangan bumi adalah sekitar...",
+                        options: ["2,5 miliar tahun", "60 juta tahun", "340 juta tahun", "140 juta tahun"],
+                        answer: 3
+                    }
+                ]
+            },
+
+            // MENU 2: PENCEMARAN UDARA
+            'udara': {
+                'beginner': [
+                    {
+                        q: "Gas buang utama dari proses pembakaran yang memicu pemanasan global adalah...",
+                        options: ["Karbon dioksida (CO₂)", "Oksigen (O₂)", "Gas Helium (He)", "Gas Hidrogen (H₂)"],
+                        answer: 0
+                    },
+                    {
+                        q: "Penumpukan gas CO₂ yang berlebih di atmosfer bumi akan memicu fenomena...",
+                        options: ["Pencairan es mendadak", "Efek rumah kaca", "Hujan es batu", "Angin topan global"],
+                        answer: 1
+                    },
+                    {
+                        q: "Partikel pencemar udara seperti COx, SOx, NOx, dan Ox dapat memicu penyakit saluran pernapasan yaitu...",
+                        options: ["Kerusakan tulang", "Penyakit kulit", "Asma dan bronkitis", "Penurunan daya ingat"],
+                        answer: 2
+                    },
+                    {
+                        q: "Sumber utama timbulnya emisi gas pencemar udara berasal dari aktivitas...",
+                        options: ["Penanaman pohon", "Daur ulang sampah", "Reboisasi hutan", "Proses pembakaran industri & kendaraan"],
+                        answer: 3
+                    },
+                    {
+                        q: "Mengapa penumpukan gas CO₂ di atmosfer menyebabkan peningkatan suhu permukaan bumi?",
+                        options: ["Sifat gas dapat ditembus panas matahari tetapi sulit memantulkannya kembali", "Gas CO₂ mengeluarkan api alami ke udara", "Gas CO₂ menghalangi masuknya angin dingin", "Gas CO₂ menyerap air laut secara cepat"],
+                        answer: 0
+                    },
+                    {
+                        q: "Dampak polusi udara terhadap tingkat keselamatan berkendara di jalan raya adalah...",
+                        options: ["Membuat ban licin", "Menurunkan jarak pandang pengemudi", "Merusak klakson kendaraan", "Mematikan lampu jalan"],
+                        answer: 1
+                    },
+                    {
+                        q: "Dampak pencemaran udara terhadap material bangunan dan fasilitas fisik di perkotaan adalah...",
+                        options: ["Memperkuat struktur beton", "Menambah mengkilapnya cat", "Mempercepat proses korosi", "Mencegah pertumbuhan lumut"],
+                        answer: 2
+                    },
+                    {
+                        q: "Pada sektor pertanian, polusi udara berdampak negatif berupa...",
+                        options: ["Buah menjadi terlalu manis", "Batang tanaman menjadi fleksibel", "Peningkatan jumlah cacing tanah", "Penurunan tingkat produktivitas pertanian"],
+                        answer: 3
+                    }
+                ],
+                'sedang': [
+                    {
+                        q: "Pada Agustus 2023, Pemprov DKI Jakarta memberlakukan kerja dari rumah (WFH) bagi pegawai karena...",
+                        options: ["Kualitas udara Jakarta yang sangat buruk akibat polusi", "Terjadinya banjir bandang serentak", "Suhu Jakarta mendadak membeku", "Kemacetan jalan raya yang parah"],
+                        answer: 0
+                    },
+                    {
+                        q: "Kasus polusi pabrik peleburan logam Padalarang (2022) mengakibatkan gangguan warga sekitar berupa...",
+                        options: ["Kerusakan saluran air minum", "Sesak napas, batuk, dan rumah/pakaian kotor", "Timbulnya gelombang panas", "Terjadinya tanah longsor"],
+                        answer: 1
+                    },
+                    {
+                        q: "Mengapa tanaman pertanian yang terpapar polusi udara mengalami penurunan produktivitas?",
+                        options: ["Karena kekurangan pasokan air", "Karena tanah berubah menjadi pasir", "Karena tanaman menyerap partikel-partikel beracun", "Karena suhu tanah terlalu dingin"],
+                        answer: 2
+                    },
+                    {
+                        q: "Gas nitrogen oksida (NOx) dan sulfur oksida (SOx) di udara jika bercampur dengan air hujan dapat memicu...",
+                        options: ["Hujan es manis", "Hujan salju hangat", "Hujan emisi fosil", "Hujan asam yang korosif"],
+                        answer: 3
+                    },
+                    {
+                        q: "Karakteristik utama akumulasi emisi gas rumah kaca di atmosfer bumi adalah...",
+                        options: ["Menjebak radiasi panas matahari di permukaan bumi", "Memantulkan seluruh cahaya matahari ke luar angkasa", "Menyerap oksigen dari udara bersih", "Mendinginkan lapisan udara bawah"],
+                        answer: 0
+                    },
+                    {
+                        q: "Fenomena berkabut pekat dan kotor yang menyelimuti wilayah perkotaan akibat polusi disebut...",
+                        options: ["Embun pagi", "Smog (asap kabut polusi)", "Awan komulonimbus", "Uap air murni"],
+                        answer: 1
+                    },
+                    {
+                        q: "Penghuni pemukiman dekat pabrik peleburan logam Padalarang harus rutin ke dokter untuk...",
+                        options: ["Tes penglihatan mata", "Pemeriksaan fungsi ginjal", "Tindakan uap pendorong lega napas", "Pembersihan sel darah"],
+                        answer: 2
+                    },
+                    {
+                        q: "Tindakan adaptasi darurat yang diambil pemerintah saat indeks standar pencemar udara (ISPU) berbahaya adalah...",
+                        options: ["Membuka industri baru", "Meningkatkan emisi pabrik", "Menutup fasilitas olahraga", "Membatasi aktivitas luar ruang dan WFH"],
+                        answer: 3
+                    }
+                ],
+                'mahir': [
+                    {
+                        q: "Mekanisme efek rumah kaca di atmosfer bumi secara ilmiah dapat dijelaskan sebagai...",
+                        options: ["Terperangkapnya panas matahari di lapisan udara sehingga suhu permukaan bumi naik", "Sinar matahari dipantulkan 100 persen kembali ke angkasa", "Terbentuknya rumah kaca raksasa di atas wilayah perkotaan", "Hilangnya lapisan atmosfer secara perlahan"],
+                        answer: 0
+                    },
+                    {
+                        q: "Mengapa polusi udara dapat memicu peningkatan angka kecelakaan lalu lintas?",
+                        options: ["Membuat permukaan jalan menjadi berminyak", "Mengganggu jarak pandang pengemudi akibat kepekatannya", "Merusak sistem pengereman kendaraan", "Mematikan sinyal navigasi GPS"],
+                        answer: 1
+                    },
+                    {
+                        q: "Dampak buruk polusi udara terhadap produktivitas tanaman pertanian terjadi karena...",
+                        options: ["Tanaman tidak mendapatkan sinar matahari sama sekali", "Stomata dan jaringan tanaman terkontaminasi partikel beracun", "Tanah berubah menjadi beracun secara otomatis", "Populasi serangga penyerbuk meningkat berlebihan"],
+                        answer: 1
+                    },
+                    {
+                        q: "Gas SOx dan NOx di atmosfer yang memicu korosi cepat pada material bangunan bekerja dengan cara...",
+                        options: ["Meningkatkan kelembapan tanah", "Mengikis lapisan kayu", "Bereaksi membentuk senyawa asam saat presipitasi", "Mengurangi daya rekat semen"],
+                        answer: 2
+                    },
+                    {
+                        q: "Mengapa akumulasi CO₂ sulit memantulkan kembali panas matahari ke luar angkasa?",
+                        options: ["Molekul CO₂ bersifat menyerap dan memancarkan kembali radiasi inframerah", "CO₂ membentuk lapisan padat di langit", "CO₂ menarik gravitasi bumi lebih kuat", "CO₂ menyatu dengan nitrogen membentuk es"],
+                        answer: 0
+                    },
+                    {
+                        q: "Peristiwa buruknya kualitas udara Jakarta pada September 2023 membuktikan bahwa...",
+                        options: ["Polusi udara hanya terjadi di musim hujan", "Aktivitas transportasi & emisi industri memicu krisis udara", "Kualitas udara tidak mempengaruhi kesehatan warga", "Pohon kota dapat menyerap 100% polusi secara instan"],
+                        answer: 1
+                    },
+                    {
+                        q: "Dampak jangka panjang paparan partikel halus polutan udara (PM2.5) bagi organ paru-paru manusia adalah...",
+                        options: ["Penguatan kapasitas vital paru", "Peningkatan jumlah hemoglobin", "Peradangan kronis dan penurunan fungsi paru-paru", "Pembersihan mukus saluran napas"],
+                        answer: 2
+                    },
+                    {
+                        q: "Langkah mitigasi paling efektif untuk mengurangi konsentrasi gas CO₂ di atmosfer perkotaan adalah...",
+                        options: ["Menebang pohon tua", "Memperbanyak pabrik pembakaran", "Mengganti jalan raya dengan beton", "Transisi energi bersih & perluasan ruang terbuka hijau"],
+                        answer: 3
+                    }
+                ]
+            },
+
+            // MENU 3: PENCEMARAN AIR
+            'air': {
+                'beginner': [
+                    {
+                        q: "Pencemaran air perairan sungai dan laut sering disebabkan oleh aktivitas manusia berupa...",
+                        options: ["Pembuangan limbah industri & pemakaian bahan peledak tangkap ikan", "Penanaman pohon bakau di pesisir", "Pembuatan kolam penampungan hujan", "Pembersihan sampah secara berkala"],
+                        answer: 0
+                    },
+                    {
+                        q: "Mengapa air sumur milik sebagian masyarakat pemukiman tidak dapat lagi digunakan untuk diminum?",
+                        options: ["Terlalu banyak mengandung oksigen murni", "Merembesnya limbah pabrik, septic tank, dan minyak ke dalam tanah", "Air sumur berubah menjadi air laut", "Kandungan mineral tanah terlalu tinggi"],
+                        answer: 1
+                    },
+                    {
+                        q: "Dampak langsung dari tercemarnya sumber perairan bagi kebutuhan dasar manusia adalah...",
+                        options: ["Meningkatnya pasokan listrik warga", "Penurunan harga beras lokal", "Berkurangnya ketersediaan air bersih untuk konsumsi dan sanitasi", "Tanah pemukiman menjadi semakin padat"],
+                        answer: 2
+                    },
+                    {
+                        q: "Penggunaan bahan peledak dalam menangkap ikan dilarang karena...",
+                        options: ["Membuat ikan menjadi terlalu asin", "Menghasilkan asap warna warni", "Membuat air sungai menjadi hangat", "Merusak ekosistem dan membunuh benih biota air"],
+                        answer: 3
+                    },
+                    {
+                        q: "Air bersih sangat dibutuhkan manusia untuk menjalankan kegiatan harian seperti...",
+                        options: ["Memasak, mandi, dan mencuci", "Membakar sampah dan membuat asap", "Menghasilkan bahan bakar minyak", "Membuat jalan raya"],
+                        answer: 0
+                    },
+                    {
+                        q: "Salah satu indikator fisik bahwa suatu aliran sungai telah mengalami pencemaran berat adalah...",
+                        options: ["Air tampak bening dan tidak berbau", "Air berwarna keruh, berbau busuk, dan dipenuhi limbah", "Banyak ikan kecil berenang bebas", "Suhu air sangat dingin dan segar"],
+                        answer: 1
+                    },
+                    {
+                        q: "Limbah rumah tangga yang dialirkan langsung ke selokan tanpa diolah dapat mencemari...",
+                        options: ["Kualitas udara atas", "Lapisan atmosfer", "Aliran sungai dan air tanah dangkal", "Unsur hara di pegunungan"],
+                        answer: 2
+                    },
+                    {
+                        q: "Tindakan yang tepat untuk menjaga kebersihan sumber air di lingkungan rumah adalah...",
+                        options: ["Membuang sisa minyak goreng ke selokan", "Mencuci kendaraan di tengah sungai", "Membuang sampah plastik ke danau", "Membuat bak penampungan dan pengolahan limbah yang aman"],
+                        answer: 3
+                    }
+                ],
+                'sedang': [
+                    {
+                        q: "Peristiwa ledakan populasi ganggang yang menutupi permukaan perairan tercemar limbah disebut...",
+                        options: ["Eutrofikasi (blooming algae)", "Evaporasi", "Karsinogenik", "Kondensasi"],
+                        answer: 0
+                    },
+                    {
+                        q: "Mengapa fenomena blooming algae pada air yang tercemar sangat berbahaya bagi makhluk air?",
+                        options: ["Membuat suhu air menjadi mendidih", "Menghalangi sinar matahari sehingga fitoplankton gagal berfotosintesis", "Menyerap seluruh air sungai hingga kering", "Membuat air berubah menjadi asin"],
+                        answer: 1
+                    },
+                    {
+                        q: "Dampak dari terhambatnya fotosintesis fitoplankton pada perairan yang tercemar adalah...",
+                        options: ["Populasi ikan bertambah pesat", "Air sungai berubah menjadi jernih", "Kadar oksigen terlarut turun sehingga mengancam kelangsungan biota air", "Pertumbuhan terumbu karang semakin cepat"],
+                        answer: 2
+                    },
+                    {
+                        q: "Mengonsumsi ikan yang ditangkap dari perairan tercemar limbah kimia beracun berisiko memicu penyakit...",
+                        options: ["Kerusakan tulang belakang", "Penyakit flu biasa", "Peningkatan daya ingat", "Kerusakan sistem saraf, kanker, dan kemandulan"],
+                        answer: 3
+                    },
+                    {
+                        q: "Merembesnya limbah cair dari septic tank atau pabrik ke dalam lapisan tanah dapat merusak...",
+                        options: ["Kualitas air sumur gali milik warga sekitar", "Kandungan gas oksigen di udara", "Struktur beton bangunan rumah", "Kekuatan sinar matahari pagi"],
+                        answer: 0
+                    },
+                    {
+                        q: "Limbah detergen dan pupuk pertanian yang terbawa aliran air ke danau memicu eutrofikasi karena...",
+                        options: ["Mengandung racun serangga", "Kaya akan nutrisi/fosfat yang menyuburkan ganggang", "Menghentikan aliran air", "Membunuh seluruh alga seketika"],
+                        answer: 1
+                    },
+                    {
+                        q: "Penyebab utama terjadinya penurunan kadar oksigen terlarut (dissolved oxygen) di perairan tercemar adalah...",
+                        options: ["Meningkatnya jumlah batu di sungai", "Air sungai mengalir terlalu cepat", "Fotosintesis fitoplankton terhenti & pembusukan alga", "Suhu udara malam hari terlalu dingin"],
+                        answer: 2
+                    },
+                    {
+                        q: "Upaya pencegahan pencemaran air akibat limbah sanitasi rumah tangga dapat dilakukan dengan...",
+                        options: ["Membuang limbah ke laut lepas", "Mengalirkan septic tank ke selokan umum", "Mencampur limbah dengan bahan kimia keras", "Membuat tangki septic tank kedap air sesuai standar"],
+                        answer: 3
+                    }
+                ],
+                'mahir': [
+                    {
+                        q: "Fitoplankton memiliki peranan vital dalam ekosistem perairan karena berfungsi sebagai...",
+                        options: ["Produsen utama oksigen dan rantai makanan dasar biota air", "Konsumen tingkat akhir di sungai", "Pengurai sampah plastik di dasar laut", "Penyerap racun kimia berpotensi karsinogenik"],
+                        answer: 0
+                    },
+                    {
+                        q: "Bagaimana mekanisme senyawa kimia beracun di perairan tercemar dapat membahayakan kesehatan manusia?",
+                        options: ["Melalui penguapan air sungai ke udara", "Melalui akumulasi racun pada rantai makanan (ikan yang dikonsumsi)", "Melalui kontak mata saat melihat sungai", "Melalui suara gemericik air beracun"],
+                        answer: 1
+                    },
+                    {
+                        q: "Dampak berantai dari fenomena eutrofikasi di ekosistem danau adalah...",
+                        options: ["Keanekaragaman ikan meningkat tajam", "Air danau menjadi sangat jernih", "Penurunan O₂ terlarut, kematian ikan massal, dan rusaknya ekosistem", "Peningkatan jumlah air bersih kota"],
+                        answer: 2
+                    },
+                    {
+                        q: "Mengapa bahan peledak untuk menangkap ikan dikategorikan sebagai bentuk kejahatan lingkungan?",
+                        options: ["Karena suara ledakan mengganggu warga", "Karena bahan peledak sangat mahal", "Karena membuat kapal nelayan rusak", "Karena memusnahkan terumbu karang dan seluruh generasi biota air"],
+                        answer: 3
+                    },
+                    {
+                        q: "Merembesnya limbah berbahaya ke dalam akuifer air tanah dangkal sulit dipulihkan karena...",
+                        options: ["Air tanah bergerak lambat dan terisolasi di bawah lapisan tanah", "Air tanah tidak pernah mengalir", "Air tanah langsung menguap saat tercemar", "Air tanah mengandung minyak alami"],
+                        answer: 0
+                    },
+                    {
+                        q: "Penurunan populasi fitoplankton secara drastis di lautan akibat polusi akan berdampak global pada...",
+                        options: ["Meningkatnya kadar garam laut", "Penurunan produksi oksigen bumi dan terganggunya serapan CO₂", "Peningkatan suhu air sungai", "Pembentukan daratan baru"],
+                        answer: 1
+                    },
+                    {
+                        q: "Langkah pengelolaan limbah cair industri sebelum dibuang ke badan air penerima dinamakan...",
+                        options: ["Proses evaporasi terbuka", "Pengenceran dengan air bersih", "Pengolahan pada IPAL (Instalasi Pengolahan Air Limbah)", "Pembakaran limbah cair"],
+                        answer: 2
+                    },
+                    {
+                        q: "Ancaman utama keberlanjutan ketersediaan air bersih di daerah pemukiman padat adalah...",
+                        options: ["Terlalu banyak pepohonan", "Kurangnya hujan di musim kemarau", "Tinggi tingkat resapan air hujan", "Pencemaran akuifer air tanah oleh limbah domestic & industri"],
+                        answer: 3
+                    }
+                ]
+            },
+
+            // MENU 4: PENCEMARAN TANAH
+            'tanah': {
+                'beginner': [
+                    {
+                        q: "Sampah non-organik yang dibuang sembarangan dan tertimbun di dalam tanah dapat menyebabkan...",
+                        options: ["Tanah kehilangan unsur hara dan menjadi tidak subur", "Tanah menjadi semakin gembur dan subur", "Kandungan air tanah bertambah pesat", "Tanah berubah menjadi logam emas"],
+                        answer: 0
+                    },
+                    {
+                        q: "Penggunaan pestisida dan herbisida secara berlebihan pada lahan pertanian merupakan contoh...",
+                        options: ["Upaya konservasi tanah", "Pencemaran tanah", "Pencemaran udara murni", "Peningkatan keanekaragaman hayati"],
+                        answer: 1
+                    },
+                    {
+                        q: "Mengapa sampah plastik sangat merusak kualitas daya dukung tanah?",
+                        options: ["Plastik mengeluarkan radiasi panas", "Plastik menarik predator liar", "Sangat sulit terurai dan menghalangi penyerapan air serta nutrisi", "Plastik membuat tanah menjadi cair"],
+                        answer: 2
+                    },
+                    {
+                        q: "Bahan kimia sintetis yang sering digunakan petani untuk membasmi hama namun memicu polusi tanah adalah...",
+                        options: ["Pupuk kompos alami", "Pupuk kandang", "Air kelapa murni", "Pestisida kimia"],
+                        answer: 3
+                    },
+                    {
+                        q: "Dampak buruk dari perilaku membuang sampah sembarangan di lingkungan pemukiman adalah...",
+                        options: ["Sampah menumpuk, mencemari tanah, dan merusak pemandangan", "Sampah akan hilang dengan sendirinya", "Tanah berubah menjadi pupuk hijau", "Tanaman di sekitar tumbuh lebih cepat"],
+                        answer: 0
+                    },
+                    {
+                        q: "Jenis sampah yang membutuhkan waktu ratusan tahun untuk dapat terurai di dalam tanah adalah...",
+                        options: ["Daun kering", "Sampah plastik dan stereofoam", "Sisa makanan", "Kertas koran"],
+                        answer: 1
+                    },
+                    {
+                        q: "Tanah yang telah tercemar oleh limbah kimia industri akan mengalami...",
+                        options: ["Peningkatan kadar vitamin tanah", "Pertumbuhan rumput yang subur", "Penurunan kualitas hara dan sifat produktifnya", "Pembentukan kristal mineral alami"],
+                        answer: 2
+                    },
+                    {
+                        q: "Tindakan sederhana yang dapat dilakukan siswa untuk mencegah pencemaran tanah adalah...",
+                        options: ["Membakar seluruh sampah di taman", "Mengubur plastik di dalam tanah", "Membuang baterai bekas ke sungai", "Memilah dan membuang sampah pada tempatnya"],
+                        answer: 3
+                    }
+                ],
+                'sedang': [
+                    {
+                        q: "Berapa persentase estimasi penggunaan pestisida yang jatuh tercemar ke tanah dan TIDAK mengenai hama sasaran?",
+                        options: ["Sekitar 80 persen", "Sekitar 20 persen", "Sekitar 5 persen", "Sekitar 100 persen"],
+                        answer: 0
+                    },
+                    {
+                        q: "Persentase pestisida yang benar-benar tepat mengenai sasaran hama tanaman saat penyemprotan hanya sekitar...",
+                        options: ["Sekitar 80 persen", "Sekitar 20 persen", "Sekitar 50 persen", "Sekitar 95 persen"],
+                        answer: 1
+                    },
+                    {
+                        q: "Mengapa pencemaran tanah akibat akumulasi pestisida berlebihan dapat mengancam ketahanan pangan?",
+                        options: ["Harga pestisida menjadi sangat murah", "Petani beralih pekerjaan menjadi nelayan", "Tanah menjadi tidak produktif untuk aktivitas bercocok tanam", "Tanaman pangan tumbuh terlalu cepat"],
+                        answer: 2
+                    },
+                    {
+                        q: "Zat kimia pestisida yang mengendap pada tanah tergolong karsinogenik yang berisiko memicu penyakit...",
+                        options: ["Peningkatan daya tahan tubuh", "Pertumbuhan tulang lebih cepat", "Penguatan imun secara alami", "Kerusakan organ otak dan ginjal manusia"],
+                        answer: 3
+                    },
+                    {
+                        q: "Dampak pencemaran bahan kimia berlebih pada tanah terhadap organisme endemik tanah adalah...",
+                        options: ["Menimbulkan perubahan metabolisme pada mikroorganisme tanah", "Meningkatkan populasi cacing tanah secara alami", "Membuat tanah terbebas dari bakteri jahat", "Mempercepat pembentukan humus tanah"],
+                        answer: 0
+                    },
+                    {
+                        q: "Zat pencemar tanah yang memiliki sifat dapat memicu timbulnya penyakit kanker disebut bersifat...",
+                        options: ["Biodegradable", "Karsinogenik", "Eutrofikasi", "Oksidatif"],
+                        answer: 1
+                    },
+                    {
+                        q: "Mengapa tanah yang tertimbun sampah anorganik sulit menyerap air hujan?",
+                        options: ["Air hujan menguap sebelum menyentuh tanah", "Tanah berubah menjadi batu padat", "Lapisan sampah anorganik menghalangi perkolasi air ke dalam tanah", "Sampah menyerap seluruh air hujan"],
+                        answer: 2
+                    },
+                    {
+                        q: "Penggunaan herbisida yang tidak terkontrol pada lahan pertanian dapat menyebabkan...",
+                        options: ["Tanah menjadi semakin gembur", "Kandungan nitrogen tanah melimpah", "Hasil panen meningkat dua kali lipat", "Matinya tumbuhan non-target dan organisme tanah yang berguna"],
+                        answer: 3
+                    }
+                ],
+                'mahir': [
+                    {
+                        q: "Bagaimana dampak negatif polutan kimia pestisida dan limbah industri terhadap mikroorganisme endemik tanah?",
+                        options: ["Menimbulkan perubahan metabolisme pada mikroorganisme dan artropoda tanah", "Meningkatkan populasi cacing tanah secara alami", "Membuat tanah terbebas dari bakteri", "Mempercepat pembentukan humus tanah"],
+                        answer: 0
+                    },
+                    {
+                        q: "Musnahnya spesies organisme dan mikroba tanah akibat pencemaran kimia berakibat pada...",
+                        options: ["Peningkatan hasil panen jagung", "Terganggunya rantai makanan dan proses dekomposisi alami tanah", "Tanah menjadi lebih dingin", "Pengurangan kadar garam di tanah"],
+                        answer: 1
+                    },
+                    {
+                        q: "Mengapa perilaku membuang sampah sembarangan oleh individu dapat menimbulkan dampak lingkungan yang meluas?",
+                        options: ["Sampah akan hilang sendiri disapu angin", "Sampah berubah menjadi pupuk organik secara otomatis", "Sampah menumpuk, sulit terurai, merusak estetika, dan ditiru masyarakat", "Sampah menarik hujan turun lebih banyak"],
+                        answer: 2
+                    },
+                    {
+                        q: "Residu pestisida karsinogenik di dalam tanah dapat berbahaya bagi kesehatan manusia melalui proses...",
+                        options: ["Inhalasi udara pegunungan", "Penyerapan radiasi matahari", "Kontak suara dengan tanaman", "Bioakumulasi pada tanaman pangan yang dikonsumsi"],
+                        answer: 3
+                    },
+                    {
+                        q: "Hilangnya komponen penting daya dukung tanah akibat pencemaran kimia berimbas jangka panjang pada...",
+                        options: ["Degradasi lahan dan penurunan ketahanan pangan nasional", "Peningkatan kesuburan lapisan topsoil", "Percepatan siklus hidrologi tanah", "Perluasan kawasan hutan primer"],
+                        answer: 0
+                    },
+                    {
+                        q: "Peran cacing tanah dan artropoda yang terganggu akibat polusi bahan kimia adalah...",
+                        options: ["Menghasilkan gas metana", "Aerasi tanah dan penguraian bahan organik menjadi humus", "Penyimpanan air di akar tanaman", "Pencegahan gempa bumi lokal"],
+                        answer: 1
+                    },
+                    {
+                        q: "Alasan utama mengapa sampah plastik tergolong bahan pencemar tanah yang paling presisten adalah...",
+                        options: ["Plastik mudah larut dalam air hujan", "Plastik bereaksi dengan sinar ultraviolet", "Rantai ikatan polimer sintetis plastik sangat sulit diurai mikroba", "Plastik mengandung racun uap alami"],
+                        answer: 2
+                    },
+                    {
+                        q: "Prinsip pengelolaan sampah 3R (Reduce, Reuse, Recycle) bertujuan utama untuk...",
+                        options: ["Menambah produksi sampah baru", "Mempercepat akumulasi sampah di TPA", "Menghabiskan anggaran daerah", "Mencegah penumpukan sampah yang mencemari tanah & lingkungan"],
+                        answer: 3
+                    }
+                ]
+            }
+        };
+
+        const gameState = {
+            mode: '1P', // '1P' vs Bot or '2P' local
+            topic: 'geologi',
+            level: 'beginner',
+            targetScore: 7,
+            soundEnabled: true,
+            p1: { score: 0, currentQ: null, usedIndices: [] },
+            p2: { score: 0, currentQ: null, usedIndices: [] },
+            isGameOver: false,
+            cpuTimer: null
+        };
+
+        const topicLabels = {
+            'geologi': 'Bumi Secara Geologi',
+            'udara': 'Pencemaran Udara',
+            'air': 'Pencemaran Air',
+            'tanah': 'Pencemaran Tanah',
+            'mix': 'Campuran Berkenalan dengan Alam'
+        };
+
+        const levelLabels = {
+            'beginner': 'Beginner (Konsep)',
+            'sedang': 'Sedang (Kasus)',
+            'mahir': 'Mahir (Analisis)'
+        };
+
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) audioCtx = new AudioCtx();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        function playSound(type) {
+            if (!gameState.soundEnabled) return;
+            try {
+                initAudio();
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(450, now);
+                    osc.frequency.exponentialRampToValueAtTime(850, now + 0.05);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'correct') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.1);
+                    osc.frequency.setValueAtTime(783.99, now + 0.2);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(240, now);
+                    osc.frequency.setValueAtTime(160, now + 0.15);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else if (type === 'win') {
+                    const notes = [523.25, 659.25, 783.99, 1046.50];
+                    notes.forEach((freq, idx) => {
+                        const o = audioCtx.createOscillator();
+                        const g = audioCtx.createGain();
+                        o.connect(g);
+                        g.connect(audioCtx.destination);
+                        o.frequency.setValueAtTime(freq, now + idx * 0.12);
+                        g.gain.setValueAtTime(0.25, now + idx * 0.12);
+                        g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.12 + 0.25);
+                        o.start(now + idx * 0.12);
+                        o.stop(now + idx * 0.12 + 0.25);
+                    });
+                }
+            } catch (e) {
+                console.log('Audio error', e);
+            }
+        }
+
+        function toggleSound() {
+            gameState.soundEnabled = !gameState.soundEnabled;
+            const text = document.getElementById('soundText');
+            const icon = document.getElementById('soundIcon');
+            if (gameState.soundEnabled) {
+                text.innerText = "Suara: ON";
+                icon.className = "fas fa-volume-up text-lg text-emerald-700";
+            } else {
+                text.innerText = "Suara: OFF";
+                icon.className = "fas fa-volume-mute text-lg text-slate-400";
+            }
+        }
+
+        function showScreen(screenId) {
+            playSound('click');
+            document.getElementById('screenTopic').classList.add('hidden');
+            document.getElementById('screenLevel').classList.add('hidden');
+            document.getElementById('screenGameplay').classList.add('hidden');
+            document.getElementById('screenVictory').classList.add('hidden');
+
+            document.getElementById(screenId).classList.remove('hidden');
+
+            if (screenId === 'screenGameplay') {
+                initGame();
+            } else if (gameState.cpuTimer) {
+                clearTimeout(gameState.cpuTimer);
+            }
+        }
+
+        function setPlayerMode(mode) {
+            playSound('click');
+            gameState.mode = mode;
+            const btn1P = document.getElementById('mode1PBtn');
+            const btn2P = document.getElementById('mode2PBtn');
+            if (mode === '1P') {
+                btn1P.className = "flex-1 py-2.5 px-4 rounded-xl font-extrabold text-xs md:text-sm transition-all bg-white text-emerald-950 shadow-sm border border-emerald-300";
+                btn2P.className = "flex-1 py-2.5 px-4 rounded-xl font-extrabold text-xs md:text-sm transition-all text-emerald-800 hover:text-emerald-950";
+            } else {
+                btn2P.className = "flex-1 py-2.5 px-4 rounded-xl font-extrabold text-xs md:text-sm transition-all bg-white text-emerald-950 shadow-sm border border-emerald-300";
+                btn1P.className = "flex-1 py-2.5 px-4 rounded-xl font-extrabold text-xs md:text-sm transition-all text-emerald-800 hover:text-emerald-950";
+            }
+        }
+
+        function selectTopic(top) {
+            gameState.topic = top;
+            document.getElementById('selectedTopicLabel').innerText = topicLabels[top];
+            showScreen('screenLevel');
+        }
+
+        function selectLevel(lvl) {
+            gameState.level = lvl;
+            showScreen('screenGameplay');
+        }
+
+        function showCustomModal(title, text, icon, onConfirm) {
+            const modal = document.getElementById('customModal');
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalText').innerText = text;
+            document.getElementById('modalIcon').innerText = icon;
+            
+            const confirmBtn = document.getElementById('modalConfirmBtn');
+            const cancelBtn = document.getElementById('modalCancelBtn');
+
+            modal.classList.remove('hidden');
+
+            confirmBtn.onclick = () => {
+                modal.classList.add('hidden');
+                if (onConfirm) onConfirm();
+            };
+            cancelBtn.onclick = () => {
+                modal.classList.add('hidden');
+            };
+        }
+
+        function confirmExitGame() {
+            showCustomModal("Kembali ke Menu?", "Apakah kamu yakin ingin keluar ke Pemilihan Topik?", "🚪", () => {
+                showScreen('screenTopic');
+            });
+        }
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function getQuestionPool() {
+            if (gameState.topic === 'mix') {
+                const allTopics = ['geologi', 'udara', 'air', 'tanah'];
+                let pool = [];
+                allTopics.forEach(t => {
+                    if (questionBank[t] && questionBank[t][gameState.level]) {
+                        pool = pool.concat(questionBank[t][gameState.level]);
+                    }
+                });
+                return pool;
+            }
+            
+            if (questionBank[gameState.topic] && questionBank[gameState.topic][gameState.level]) {
+                return questionBank[gameState.topic][gameState.level];
+            }
+            return questionBank['geologi']['beginner'];
+        }
+
+        function generateQuestionForPlayer(playerKey) {
+            const pool = getQuestionPool();
+            
+            // Filter indeks pertanyaan yang belum pernah dipakai oleh pemain pada sesi ini
+            let availableIndices = [];
+            for (let i = 0; i < pool.length; i++) {
+                if (!gameState[playerKey].usedIndices.includes(i)) {
+                    availableIndices.push(i);
+                }
+            }
+
+            // Jika seluruh soal dalam pool sudah digunakan, reset tracking agar game tidak terhenti
+            if (availableIndices.length === 0) {
+                gameState[playerKey].usedIndices = [];
+                for (let i = 0; i < pool.length; i++) {
+                    availableIndices.push(i);
+                }
+            }
+
+            const randomIndex = availableIndices[getRandomInt(0, availableIndices.length - 1)];
+            gameState[playerKey].usedIndices.push(randomIndex);
+
+            const qObj = pool[randomIndex];
+            gameState[playerKey].currentQ = qObj;
+
+            // Render ke UI
+            document.getElementById(`${playerKey}Question`).innerText = qObj.q;
+
+            const container = document.getElementById(`${playerKey}OptionsContainer`);
+            container.innerHTML = '';
+
+            qObj.options.forEach((optText, index) => {
+                const btn = document.createElement('button');
+                btn.className = "option-btn p-3 text-left leading-snug flex items-center gap-2 cursor-pointer";
+                btn.innerHTML = `<span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-900 flex items-center justify-center font-black text-xs shrink-0">${String.fromCharCode(65 + index)}</span> <span>${optText}</span>`;
+                btn.onclick = () => submitAnswer(playerKey, index);
+                container.appendChild(btn);
+            });
+        }
+
+        function submitAnswer(playerKey, selectedIndex) {
+            if (gameState.isGameOver) return;
+
+            const currentQ = gameState[playerKey].currentQ;
+            if (!currentQ) return;
+
+            if (selectedIndex === currentQ.answer) {
+                // RIGHT ANSWER
+                playSound('correct');
+                gameState[playerKey].score += 1;
+                document.getElementById(`${playerKey}Score`).innerText = gameState[playerKey].score;
+
+                showToast(playerKey === 'p1' ? 'Pemain Merah Benar! 🧗‍♂️' : 'Pemain Biru Benar! 🧗‍♂️', 'bg-emerald-600');
+
+                if (gameState[playerKey].score >= gameState.targetScore) {
+                    triggerWin(playerKey);
+                    return;
+                }
+            } else {
+                // WRONG ANSWER
+                playSound('wrong');
+                showToast('Jawaban Kurang Tepat! Coba Lagi! ❌', 'bg-rose-600');
+            }
+
+            generateQuestionForPlayer(playerKey);
+            drawPinangCanvas();
+        }
+
+        function showToast(msg, bgClass) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.className = `fixed top-20 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-full text-white font-black text-xs md:text-sm shadow-xl transition-all duration-300 pointer-events-none ${bgClass} opacity-100 scale-100`;
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'scale-90');
+                toast.classList.remove('opacity-100', 'scale-100');
+            }, 1200);
+        }
+
+        function scheduleCpuTurn() {
+            if (gameState.mode !== '1P' || gameState.isGameOver) return;
+
+            let delay = 5800;
+            if (gameState.level === 'sedang') delay = 4500;
+            if (gameState.level === 'mahir') delay = 3500;
+
+            const variance = getRandomInt(-600, 600);
+            delay += variance;
+
+            gameState.cpuTimer = setTimeout(() => {
+                if (gameState.isGameOver || gameState.mode !== '1P') return;
+
+                // CPU accuracy tuned to 80%
+                const isCorrect = Math.random() < 0.80;
+                if (isCorrect) {
+                    gameState.p2.score += 1;
+                    document.getElementById('p2Score').innerText = gameState.p2.score;
+                    playSound('correct');
+
+                    if (gameState.p2.score >= gameState.targetScore) {
+                        triggerWin('p2');
+                        return;
+                    }
+                }
+                generateQuestionForPlayer('p2');
+                drawPinangCanvas();
+                scheduleCpuTurn();
+            }, delay);
+        }
+
+        function initGame() {
+            gameState.p1.score = 0;
+            gameState.p2.score = 0;
+            gameState.p1.usedIndices = [];
+            gameState.p2.usedIndices = [];
+            gameState.isGameOver = false;
+
+            document.getElementById('p1Score').innerText = '0';
+            document.getElementById('p2Score').innerText = '0';
+
+            document.getElementById('gameplayTopicTag').innerText = topicLabels[gameState.topic];
+            document.getElementById('gameplayLevelTag').innerText = levelLabels[gameState.level];
+
+            const p2OptionsContainer = document.getElementById('p2OptionsContainer');
+            const cpuThinkingBox = document.getElementById('cpuThinkingBox');
+            const p2NameLabel = document.getElementById('p2NameLabel');
+
+            if (gameState.mode === '1P') {
+                p2OptionsContainer.classList.add('hidden');
+                cpuThinkingBox.classList.remove('hidden');
+                p2NameLabel.innerText = "Bot Komputer";
+            } else {
+                p2OptionsContainer.classList.remove('hidden');
+                cpuThinkingBox.classList.add('hidden');
+                p2NameLabel.innerText = "Pemain Biru";
+            }
+
+            generateQuestionForPlayer('p1');
+            generateQuestionForPlayer('p2');
+            initCanvas();
+            drawPinangCanvas();
+
+            if (gameState.mode === '1P') {
+                if (gameState.cpuTimer) clearTimeout(gameState.cpuTimer);
+                scheduleCpuTurn();
+            }
+        }
+
+        function resetCurrentGame() {
+            if (gameState.cpuTimer) clearTimeout(gameState.cpuTimer);
+            document.getElementById('screenVictory').classList.add('hidden');
+            initGame();
+        }
+
+        let canvas, ctx;
+
+        function initCanvas() {
+            canvas = document.getElementById('pinangCanvas');
+            ctx = canvas.getContext('2d');
+            
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+        }
+
+        window.addEventListener('resize', () => {
+            if (canvas && !document.getElementById('screenGameplay').classList.contains('hidden')) {
+                initCanvas();
+                drawPinangCanvas();
+            }
+        });
+
+        function drawPinangCanvas() {
+            if (!ctx) return;
+            const w = canvas.width;
+            const h = canvas.height;
+
+            ctx.clearRect(0, 0, w, h);
+
+            const groundY = h - 25;
+            const topY = 65;
+            const poleHeight = groundY - topY;
+
+            const pole1X = w * 0.32;
+            const pole2X = w * 0.68;
+            const poleWidth = 18;
+
+            // Natural Grass / Soil Ground
+            ctx.fillStyle = '#15803d';
+            ctx.beginPath();
+            ctx.ellipse(w / 2, groundY + 15, w * 0.48, 25, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Draw Bamboo Pinang Pole
+            function drawPole(x) {
+                // Natural Bamboo Gradient
+                const grad = ctx.createLinearGradient(x - poleWidth/2, 0, x + poleWidth/2, 0);
+                grad.addColorStop(0, '#14532d');
+                grad.addColorStop(0.5, '#4ade80');
+                grad.addColorStop(1, '#064e3b');
+
+                ctx.fillStyle = grad;
+                ctx.fillRect(x - poleWidth / 2, topY, poleWidth, poleHeight);
+
+                // Joints
+                ctx.strokeStyle = '#022c22';
+                ctx.lineWidth = 3;
+                for (let y = topY + 30; y < groundY; y += 40) {
+                    ctx.beginPath();
+                    ctx.moveTo(x - poleWidth / 2 - 2, y);
+                    ctx.lineTo(x + poleWidth / 2 + 2, y);
+                    ctx.stroke();
+                }
+
+                // Ring Wheel on Top
+                ctx.fillStyle = '#b45309';
+                ctx.beginPath();
+                ctx.ellipse(x, topY, 32, 10, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#78350f';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                // Prizes
+                ctx.font = '18px serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('👕', x - 22, topY + 18);
+                ctx.fillText('🎸', x, topY + 22);
+                ctx.fillText('🎁', x + 22, topY + 18);
+
+                // Flag Pole & Merah Putih
+                ctx.strokeStyle = '#94a3b8';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(x, topY);
+                ctx.lineTo(x, topY - 35);
+                ctx.stroke();
+
+                ctx.fillStyle = '#ef4444'; // Red
+                ctx.fillRect(x, topY - 35, 24, 10);
+                ctx.fillStyle = '#ffffff'; // White
+                ctx.fillRect(x, topY - 25, 24, 10);
+                ctx.strokeStyle = '#cbd5e1';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x, topY - 35, 24, 20);
+            }
+
+            drawPole(pole1X);
+            drawPole(pole2X);
+
+            // Climber Progress
+            const p1Progress = Math.min(gameState.p1.score / gameState.targetScore, 1.0);
+            const p2Progress = Math.min(gameState.p2.score / gameState.targetScore, 1.0);
+
+            const p1ClimbY = groundY - (p1Progress * (poleHeight - 20));
+            const p2ClimbY = groundY - (p2Progress * (poleHeight - 20));
+
+            drawClimber(pole1X, p1ClimbY, '#e11d48', 'P1', gameState.p1.score);
+            drawClimber(pole2X, p2ClimbY, '#0284c7', gameState.mode === '1P' ? 'BOT' : 'P2', gameState.p2.score);
+        }
+
+        function drawClimber(x, y, color, label, score) {
+            ctx.save();
+
+            // Head
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(x - 18, y, 14, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Label
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 10px Fredoka, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(label, x - 18, y + 3.5);
+
+            // Arms hugging pole
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(x - 18, y - 4);
+            ctx.lineTo(x - 2, y - 8);
+            ctx.moveTo(x - 18, y + 4);
+            ctx.lineTo(x - 2, y + 8);
+            ctx.stroke();
+
+            // Score Badge
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(x - 45, y - 10, 22, 18);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x - 45, y - 10, 22, 18);
+            
+            ctx.fillStyle = color;
+            ctx.font = 'bold 11px sans-serif';
+            ctx.fillText(`${score}⭐`, x - 34, y + 3);
+
+            ctx.restore();
+        }
+
+        function triggerWin(winnerKey) {
+            gameState.isGameOver = true;
+            if (gameState.cpuTimer) clearTimeout(gameState.cpuTimer);
+
+            playSound('win');
+
+            const winnerTitle = document.getElementById('winnerTitle');
+            const winnerSubtitle = document.getElementById('winnerSubtitle');
+
+            if (winnerKey === 'p1') {
+                winnerTitle.innerText = "Pemain Merah Menang! 🎉";
+                winnerSubtitle.innerText = "Hebat sekali! Pemain Merah berhasil menjawab pertanyaan IPS Alam dan mencapai puncak!";
+            } else {
+                if (gameState.mode === '1P') {
+                    winnerTitle.innerText = "Bot Komputer Menang! 🤖";
+                    winnerSubtitle.innerText = "Jangan berkecil hati! Pelajari kembali materi IPS dan raih kemenangan berikutnya!";
+                } else {
+                    winnerTitle.innerText = "Pemain Biru Menang! 🎉";
+                    winnerSubtitle.innerText = "Luar biasa! Pemain Biru berhasil menjawab pertanyaan IPS Alam dan mencapai puncak!";
+                }
+            }
+
+            document.getElementById('screenVictory').classList.remove('hidden');
+            startConfetti();
+        }
+
+        let confettiParticles = [];
+        let confettiAnimationId = null;
+
+        function startConfetti() {
+            const confettiCanvas = document.getElementById('confettiCanvas');
+            const cCtx = confettiCanvas.getContext('2d');
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+
+            const colors = ['#16a34a', '#0284c7', '#d97706', '#e11d48', '#8b5cf6', '#10b981'];
+            confettiParticles = [];
+
+            for (let i = 0; i < 120; i++) {
+                confettiParticles.push({
+                    x: Math.random() * confettiCanvas.width,
+                    y: Math.random() * confettiCanvas.height - confettiCanvas.height,
+                    size: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speedY: Math.random() * 3 + 2,
+                    speedX: Math.random() * 2 - 1,
+                    rotation: Math.random() * 360,
+                    rotationSpeed: Math.random() * 5 - 2.5
+                });
+            }
+
+            function renderConfetti() {
+                cCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+
+                confettiParticles.forEach(p => {
+                    p.y += p.speedY;
+                    p.x += p.speedX;
+                    p.rotation += p.rotationSpeed;
+
+                    if (p.y > confettiCanvas.height) {
+                        p.y = -10;
+                        p.x = Math.random() * confettiCanvas.width;
+                    }
+
+                    cCtx.save();
+                    cCtx.translate(p.x, p.y);
+                    cCtx.rotate((p.rotation * Math.PI) / 180);
+                    cCtx.fillStyle = p.color;
+                    cCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    cCtx.restore();
+                });
+
+                if (!document.getElementById('screenVictory').classList.contains('hidden')) {
+                    confettiAnimationId = requestAnimationFrame(renderConfetti);
+                } else {
+                    cCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                }
+            }
+
+            if (confettiAnimationId) cancelAnimationFrame(confettiAnimationId);
+            renderConfetti();
+        }
+
+        window.onload = function() {
+            initCanvas();
+            drawPinangCanvas();
+        };
+    </script>
+</body>
+</html>
